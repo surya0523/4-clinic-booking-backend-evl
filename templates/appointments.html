@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Appointments</h2>
+<table class="table table-striped">
+  <tr>
+    <th>Doctor</th>
+    <th>Patient</th>
+    <th>Email</th>
+    <th>Slot</th>
+  </tr>
+  {% for a in appointments %}
+  <tr>
+    <td>{{ a.doctor.name }}</td>
+    <td>{{ a.patient_name }}</td>
+    <td>{{ a.email }}</td>
+    <td>{{ a.slot.time }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

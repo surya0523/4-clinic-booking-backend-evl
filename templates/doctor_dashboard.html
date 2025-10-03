@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ doctor.name }} - Dashboard</h2>
+<h5>Specialization: {{ doctor.specialization }}</h5>
+<hr>
+
+<!-- Add Slot -->
+<h4>Add Available Slot</h4>
+<form method="POST" class="mb-3">
+  <div class="input-group">
+    <input type="text" name="time" placeholder="e.g. 10:00 AM - 11:00 AM" class="form-control" required>
+    <button class="btn btn-success">Add Slot</button>
+  </div>
+</form>
+
+<!-- List Slots -->
+<h4>Available Slots</h4>
+<table class="table table-bordered">
+  <tr>
+    <th>Slot Time</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  {% for slot in slots %}
+  <tr>
+    <td>{{ slot.time }}</td>
+    <td>{% if slot.appointment %}Booked{% else %}Available{% endif %}</td>
+    <td>
+      {% if not slot.appointment %}
+        <a href="{{ url_for('delete_slot', doctor_id=doctor.id, slot_id=slot.id) }}" class="btn btn-danger btn-sm">Delete</a>
+      {% else %}
+        <span class="text-muted">Locked</span>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<!-- Appointments -->
+<h4>Appointments</h4>
+<table class="table table-striped">
+  <tr>
+    <th>Patient</th>
+    <th>Email</th>
+    <th>Slot</th>
+    <th>Booked On</th>
+  </tr>
+  {% for a in appointments %}
+  <tr>
+    <td>{{ a.patient_name }}</td>
+    <td>{{ a.email }}</td>
+    <td>{{ a.slot.time }}</td>
+    <td>{{ a.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
